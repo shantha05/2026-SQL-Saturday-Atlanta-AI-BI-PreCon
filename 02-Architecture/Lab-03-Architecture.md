@@ -4,151 +4,207 @@
 
 Lab 3 builds a production-ready Power BI semantic model on top of Lab 1's gold layer tables, using both Power BI MCP Servers for AI-assisted development and natural language querying.
 
-## Architecture Diagram
+## 📊 Architecture Diagram
 
 ```mermaid
 flowchart TB
-    G1[gold_sales_fact]
-    G2[gold_service_fact]
-    G3[gold_test_drive_fact]
-    G4[gold_dealership_dim]
-    G5[gold_customer_dim]
-    G6[gold_vehicle_dim]
+    subgraph LAB1["🥇 Lab 1: Gold Layer Tables"]
+        G1["📈 gold_sales_fact"]
+        G2["🔧 gold_service_fact"]
+        G3["🚗 gold_test_drive_fact"]
+        G4["🏢 gold_dealership_dim"]
+        G5["👤 gold_customer_dim"]
+        G6["🚙 gold_vehicle_dim"]
+    end
     
-    F1[Sales Fact]
-    F2[Service Fact]
-    F3[Test Drive Fact]
-    D1[Dealership Dim]
-    D2[Customer Dim]
-    D3[Vehicle Dim]
-    D4[Date Dim]
+    subgraph MODEL["📊 Power BI Semantic Model"]
+        direction TB
+        subgraph FACTS["Fact Tables"]
+            F1["📊 Sales Fact"]
+            F2["🔧 Service Fact"]
+            F3["🚗 Test Drive Fact"]
+        end
+        subgraph DIMS["Dimension Tables"]
+            D1["🏢 Dealership Dim"]
+            D2["👤 Customer Dim"]
+            D3["🚙 Vehicle Dim"]
+            D4["📅 Date Dim"]
+        end
+    end
     
-    M1[Sales Measures]
-    M2[Time Intelligence]
-    M3[Customer Analytics]
-    M4[Service Metrics]
-    M5[Test Drive KPIs]
+    subgraph MEASURES["📐 DAX Measures & Analytics"]
+        M1["💰 Sales Measures"]
+        M2["⏰ Time Intelligence"]
+        M3["👥 Customer Analytics"]
+        M4["🔧 Service Metrics"]
+        M5["🚗 Test Drive KPIs"]
+    end
     
-    MODELING[Power BI Modeling MCP]
-    REMOTE[Power BI Remote MCP]
-    DEV[Developer]
-    BIZ[Business User]
-    CODE[Generated DAX]
-    INSIGHTS[Query Results]
+    subgraph AI_DEV["🤖 AI-Assisted Development"]
+        DEV["👨‍💻 Developer"]
+        MODELING["⚡ Power BI Modeling MCP<br/>DAX Generation"]
+        CODE["📝 Generated DAX Code"]
+    end
+    
+    subgraph AI_QUERY["🤖 AI-Assisted Querying"]
+        BIZ["👤 Business User"]
+        REMOTE["⚡ Power BI Remote MCP<br/>Natural Language"]
+        INSIGHTS["💡 Query Results<br/>& Insights"]
+    end
 
-    G1 & G2 & G3 & G4 & G5 & G6 --> F1 & F2 & F3 & D1 & D2 & D3
-    F1 & F2 & F3 & D1 & D2 & D3 & D4 --> M1 & M2 & M3 & M4 & M5
+    LAB1 --> MODEL
+    MODEL --> MEASURES
 
     DEV --> MODELING
     MODELING --> CODE
-    CODE --> M1 & M2 & M3 & M4 & M5
+    CODE -.->|creates| MEASURES
 
     BIZ --> REMOTE
-    REMOTE --> M1 & M2 & M3 & M4 & M5
-    M1 & M2 & M3 & M4 & M5 --> INSIGHTS
+    REMOTE -.->|queries| MEASURES
+    MEASURES --> INSIGHTS
     INSIGHTS --> BIZ
 
-    style MODELING fill:#00bcf2
-    style REMOTE fill:#00bcf2
-    style DEV fill:#ffb900
-    style BIZ fill:#ffb900
-    style M1 fill:#00aa00
-    style M2 fill:#00aa00
-    style M3 fill:#00aa00
-    style M4 fill:#00aa00
-    style M5 fill:#00aa00
+    style LAB1 fill:#E8F5E9,stroke:#388E3C,stroke-width:3px,color:#000
+    style MODEL fill:#E3F2FD,stroke:#1976D2,stroke-width:3px,color:#000
+    style FACTS fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#000
+    style DIMS fill:#C5CAE9,stroke:#3F51B5,stroke-width:2px,color:#000
+    style MEASURES fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#000
+    style AI_DEV fill:#FCE4EC,stroke:#C2185B,stroke-width:3px,color:#000
+    style AI_QUERY fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#000
+    
+    style MODELING fill:#C2185B,stroke:#880E4F,stroke-width:3px,color:#fff
+    style REMOTE fill:#0277BD,stroke:#01579B,stroke-width:3px,color:#fff
+    style DEV fill:#FF6F00,stroke:#E65100,stroke-width:2px,color:#fff
+    style BIZ fill:#FF6F00,stroke:#E65100,stroke-width:2px,color:#fff
+    style CODE fill:#F57F17,stroke:#F9A825,stroke-width:2px,color:#000
+    style INSIGHTS fill:#388E3C,stroke:#1B5E20,stroke-width:3px,color:#fff
+    
+    style M1 fill:#FBC02D,stroke:#F57F17,stroke-width:2px,color:#000
+    style M2 fill:#FBC02D,stroke:#F57F17,stroke-width:2px,color:#000
+    style M3 fill:#FBC02D,stroke:#F57F17,stroke-width:2px,color:#000
+    style M4 fill:#FBC02D,stroke:#F57F17,stroke-width:2px,color:#000
+    style M5 fill:#FBC02D,stroke:#F57F17,stroke-width:2px,color:#000
 ```
 
 ## Semantic Model Structure
 
-### Star Schema Design
+### ⭐ Star Schema Design
 
 ```mermaid
-graph LR
-    subgraph "Dimension Tables"
-        DATE[Date Dim<br/>Date, Year, Quarter<br/>Month, Day]
-        DEALER[Dealership Dim<br/>DealershipID, Name<br/>City, Region]
-        CUST[Customer Dim<br/>CustomerID, Name<br/>City, State]
-        VEH[Vehicle Dim<br/>VehicleID, Make<br/>Model, Year, Type]
+graph TB
+    subgraph DIMS["🗂️ Dimension Tables"]
+        DATE["📅 Date Dim<br/>Date, Year, Quarter<br/>Month, Day, Weekday"]
+        DEALER["🏢 Dealership Dim<br/>DealershipID, Name<br/>City, Region, Country"]
+        CUST["👤 Customer Dim<br/>CustomerID, Name<br/>City, State, Segment"]
+        VEH["🚙 Vehicle Dim<br/>VehicleID, Make, Model<br/>Year, Type, Category"]
     end
 
-    subgraph "Fact Tables"
-        SALES[Sales Fact<br/>SaleID, SaleDate<br/>SalePrice, Discount<br/>NetSalePrice]
-        SERVICE[Service Fact<br/>ServiceID, ServiceDate<br/>TotalCost, PartsCost<br/>Satisfaction]
-        TEST[Test Drive Fact<br/>TestDriveID, Date<br/>Outcome, Feedback]
+    subgraph FACTS["📊 Fact Tables"]
+        SALES["💰 Sales Fact<br/>SaleID, SaleDate<br/>SalePrice, Discount<br/>NetSalePrice, Margin"]
+        SERVICE["🔧 Service Fact<br/>ServiceID, ServiceDate<br/>TotalCost, PartsCost<br/>LaborCost, Satisfaction"]
+        TEST["🚗 Test Drive Fact<br/>TestDriveID, Date<br/>Outcome, Feedback<br/>Duration, Conversion"]
     end
 
-    SALES --> DATE
-    SALES --> DEALER
-    SALES --> CUST
-    SALES --> VEH
+    SALES -.->|Many:One| DATE
+    SALES -.->|Many:One| DEALER
+    SALES -.->|Many:One| CUST
+    SALES -.->|Many:One| VEH
     
-    SERVICE --> DATE
-    SERVICE --> DEALER
-    SERVICE --> CUST
+    SERVICE -.->|Many:One| DATE
+    SERVICE -.->|Many:One| DEALER
+    SERVICE -.->|Many:One| CUST
     
-    TEST --> DATE
-    TEST --> DEALER
-    TEST --> CUST
-    TEST --> VEH
+    TEST -.->|Many:One| DATE
+    TEST -.->|Many:One| DEALER
+    TEST -.->|Many:One| CUST
+    TEST -.->|Many:One| VEH
 
-    style SALES fill:#f8b900,stroke:#e09500,stroke-width:2px
-    style SERVICE fill:#f8b900,stroke:#e09500,stroke-width:2px
-    style TEST fill:#f8b900,stroke:#e09500,stroke-width:2px
+    style DIMS fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#000
+    style FACTS fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#000
+    
+    style DATE fill:#C5CAE9,stroke:#3F51B5,stroke-width:2px,color:#000
+    style DEALER fill:#C5CAE9,stroke:#3F51B5,stroke-width:2px,color:#000
+    style CUST fill:#C5CAE9,stroke:#3F51B5,stroke-width:2px,color:#000
+    style VEH fill:#C5CAE9,stroke:#3F51B5,stroke-width:2px,color:#000
+    
+    style SALES fill:#FBC02D,stroke:#F57F17,stroke-width:3px,color:#000
+    style SERVICE fill:#FBC02D,stroke:#F57F17,stroke-width:3px,color:#000
+    style TEST fill:#FBC02D,stroke:#F57F17,stroke-width:3px,color:#000
 ```
 
 ## Two MCP Servers in Action
 
-### 1. Power BI Modeling MCP Server
+### 1️⃣ Power BI Modeling MCP Server
 **Purpose:** Generate DAX measures and enhance model metadata
 
 ```mermaid
 sequenceDiagram
-    participant Dev as Developer
-    participant MCP as Modeling MCP
-    participant Model as Semantic Model
+    participant Dev as 👨‍💻 Developer
+    participant MCP as ⚡ Modeling MCP
+    participant Model as 📊 Semantic Model
     
-    Dev->>MCP: "Create sales and margin measures"
-    MCP->>Dev: Generate DAX code
-    Dev->>Model: Add measures to model
+    rect rgb(252, 228, 236)
+        Note over Dev,Model: Step 1: Create Base Measures
+        Dev->>MCP: "Create sales and margin measures"
+        MCP->>Dev: Generate DAX code
+        Dev->>Model: Add measures to model
+    end
     
-    Dev->>MCP: "Add time intelligence measures"
-    MCP->>Dev: YoY, MoM, YTD, Rolling Avg
-    Dev->>Model: Apply time calculations
+    rect rgb(225, 245, 254)
+        Note over Dev,Model: Step 2: Add Time Intelligence
+        Dev->>MCP: "Add time intelligence measures"
+        MCP->>Dev: YoY, MoM, YTD, Rolling Avg
+        Dev->>Model: Apply time calculations
+    end
     
-    Dev->>MCP: "Add descriptions to all measures"
-    MCP->>Dev: Business-friendly descriptions
-    Dev->>Model: Update metadata
+    rect rgb(232, 245, 233)
+        Note over Dev,Model: Step 3: Enhance Metadata
+        Dev->>MCP: "Add descriptions to all measures"
+        MCP->>Dev: Business-friendly descriptions
+        Dev->>Model: Update metadata
+    end
     
-    Dev->>MCP: "Optimize DAX performance"
-    MCP->>Dev: Improved measure formulas
-    Dev->>Model: Replace with optimized code
+    rect rgb(255, 249, 196)
+        Note over Dev,Model: Step 4: Optimize Performance
+        Dev->>MCP: "Optimize DAX performance"
+        MCP->>Dev: Improved measure formulas
+        Dev->>Model: Replace with optimized code
+    end
 ```
 
-### 2. Power BI Remote MCP Server
+### 2️⃣ Power BI Remote MCP Server
 **Purpose:** Query semantic model using natural language
 
 ```mermaid
 sequenceDiagram
-    participant User as Business User
-    participant MCP as Remote MCP
-    participant Model as Semantic Model
-    participant Results as Query Results
+    participant User as 👤 Business User
+    participant MCP as ⚡ Remote MCP
+    participant Model as 📊 Semantic Model
+    participant Results as 💡 Query Results
     
-    User->>MCP: "What are top 10 vehicles by sales?"
-    MCP->>Model: Generate & Execute DAX Query
-    Model->>Results: Return aggregated data
-    Results->>User: Display top vehicles
+    rect rgb(225, 245, 254)
+        Note over User,Results: Query 1: Product Analysis
+        User->>MCP: "What are top 10 vehicles by sales?"
+        MCP->>Model: Generate & Execute DAX Query
+        Model->>Results: Return aggregated data
+        Results->>User: Display top vehicles
+    end
     
-    User->>MCP: "Show monthly sales trends"
-    MCP->>Model: Time-series DAX query
-    Model->>Results: Monthly aggregations
-    Results->>User: Display trends
+    rect rgb(232, 245, 233)
+        Note over User,Results: Query 2: Time Series Analysis
+        User->>MCP: "Show monthly sales trends"
+        MCP->>Model: Time-series DAX query
+        Model->>Results: Monthly aggregations
+        Results->>User: Display trends
+    end
     
-    User->>MCP: "Customer lifetime value top 20"
-    MCP->>Model: Complex calculated query
-    Model->>Results: Customer analytics
-    Results->>User: Display rankings
+    rect rgb(255, 249, 196)
+        Note over User,Results: Query 3: Customer Analytics
+        User->>MCP: "Customer lifetime value top 20"
+        MCP->>Model: Complex calculated query
+        Model->>Results: Customer analytics
+        Results->>User: Display rankings
+    end
 ```
 
 ## Measure Categories Created
@@ -196,36 +252,75 @@ Converted Test Drives = CALCULATE(COUNTROWS(gold_test_drive_fact), gold_test_dri
 Test Drive Conversion Rate = DIVIDE([Converted Test Drives], [Test Drive Count])
 ```
 
-## AI-Assisted Development Workflow
+## 🔄 AI-Assisted Development Workflow
 
 ```mermaid
 graph TB
-    START[Start with Gold Tables<br/>from Lab 1]
+    START["🥇 Start with Gold Tables<br/>from Lab 1"]
     
-    START --> BUILD[Build Semantic Model<br/>Import Gold Tables]
-    BUILD --> REL[Configure Relationships<br/>Star Schema]
+    subgraph SETUP["🛠️ Model Setup Phase"]
+        BUILD["📊 Build Semantic Model<br/>Import Gold Tables"]
+        REL["⭐ Configure Relationships<br/>Star Schema Design"]
+    end
     
-    REL --> MODELING[Power BI Modeling MCP]
+    subgraph DEV["👨‍💻 Development Phase (Modeling MCP)"]
+        MODELING["⚡ Power BI Modeling MCP<br/>AI-Assisted DAX Generation"]
+        GEN1["💰 Generate Base Measures<br/>Sales, Service, Test Drive"]
+        GEN2["⏰ Generate Time Intelligence<br/>YoY, MoM, YTD, Rolling Avg"]
+        GEN3["👥 Generate Customer Analytics<br/>Lifetime Value, Retention"]
+        META["📝 Add Metadata<br/>Descriptions, Synonyms"]
+        OPT["⚡ Optimize Performance<br/>Improve DAX Formulas"]
+    end
     
-    MODELING --> GEN1[Generate Base Measures<br/>Sales, Service, Test Drive]
-    GEN1 --> GEN2[Generate Time Intelligence<br/>YoY, MoM, YTD]
-    GEN2 --> GEN3[Generate Customer Analytics<br/>Lifetime Value, Retention]
-    GEN3 --> META[Add Metadata<br/>Descriptions, Synonyms]
-    META --> OPT[Optimize Performance<br/>Improve DAX]
+    PUBLISH["🚀 Publish to<br/>Power BI Service"]
     
-    OPT --> PUBLISH[Publish to Power BI Service]
+    subgraph CONSUME["👥 Consumption Phase (Remote MCP)"]
+        REMOTE["⚡ Power BI Remote MCP<br/>Natural Language Queries"]
+        QUERY1["❓ Top vehicles by sales"]
+        QUERY2["📈 Monthly sales trends"]
+        QUERY3["🏢 Dealership rankings"]
+        QUERY4["👤 Customer insights"]
+    end
     
-    PUBLISH --> REMOTE[Power BI Remote MCP]
-    REMOTE --> QUERY1[Ask: Top vehicles by sales]
-    REMOTE --> QUERY2[Ask: Monthly trends]
-    REMOTE --> QUERY3[Ask: Dealership rankings]
-    REMOTE --> QUERY4[Ask: Customer insights]
+    INSIGHTS["💡 Business Insights<br/>& Decision Making"]
     
-    QUERY1 & QUERY2 & QUERY3 & QUERY4 --> INSIGHTS[Business Insights]
+    START --> BUILD
+    BUILD --> REL
+    REL --> MODELING
     
-    style MODELING fill:#00bcf2,stroke:#0078d4,stroke-width:3px,color:#fff
-    style REMOTE fill:#00bcf2,stroke:#0078d4,stroke-width:3px,color:#fff
-    style INSIGHTS fill:#00aa00,stroke:#008800,stroke-width:2px
+    MODELING --> GEN1
+    GEN1 --> GEN2
+    GEN2 --> GEN3
+    GEN3 --> META
+    META --> OPT
+    
+    OPT --> PUBLISH
+    
+    PUBLISH --> REMOTE
+    REMOTE --> QUERY1 & QUERY2 & QUERY3 & QUERY4
+    
+    QUERY1 & QUERY2 & QUERY3 & QUERY4 --> INSIGHTS
+    
+    style START fill:#E8F5E9,stroke:#388E3C,stroke-width:3px,color:#000
+    style SETUP fill:#E3F2FD,stroke:#1976D2,stroke-width:3px,color:#000
+    style DEV fill:#FCE4EC,stroke:#C2185B,stroke-width:3px,color:#000
+    style CONSUME fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#000
+    
+    style MODELING fill:#C2185B,stroke:#880E4F,stroke-width:4px,color:#fff
+    style REMOTE fill:#0277BD,stroke:#01579B,stroke-width:4px,color:#fff
+    style PUBLISH fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style INSIGHTS fill:#388E3C,stroke:#1B5E20,stroke-width:4px,color:#fff
+    
+    style GEN1 fill:#F8BBD0,stroke:#C2185B,stroke-width:2px,color:#000
+    style GEN2 fill:#F8BBD0,stroke:#C2185B,stroke-width:2px,color:#000
+    style GEN3 fill:#F8BBD0,stroke:#C2185B,stroke-width:2px,color:#000
+    style META fill:#F8BBD0,stroke:#C2185B,stroke-width:2px,color:#000
+    style OPT fill:#F8BBD0,stroke:#C2185B,stroke-width:2px,color:#000
+    
+    style QUERY1 fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#000
+    style QUERY2 fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#000
+    style QUERY3 fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#000
+    style QUERY4 fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#000
 ```
 
 ## Sample Prompts Used
@@ -294,30 +389,51 @@ What is the customer lifetime value for the top 20 customers?
 
 ## Architecture Benefits
 
-✅ **Built on Gold Layer:** Clean, analytics-ready data from Lab 1
-✅ **Star Schema:** Optimized query performance
-✅ **Reusable Measures:** Consistent calculations across all reports
-✅ **AI-Generated DAX:** Rapid measure development
-✅ **Natural Language Queries:** Business users query without DAX knowledge
-✅ **Rich Metadata:** Descriptions improve AI query generation
-✅ **Time Intelligence:** Sophisticated date calculations built-in
-✅ **Customer Analytics:** Deep insights into customer behavior
+- ✅ **Built on Gold Layer:** Clean, analytics-ready data from Lab 1
+- ✅ **Star Schema:** Optimized query performance
+- ✅ **Reusable Measures:** Consistent calculations across all reports
+- ✅ **AI-Generated DAX:** Rapid measure development
+- ✅ **Natural Language Queries:** Business users query without DAX knowledge
+- ✅ **Rich Metadata:** Descriptions improve AI query generation
+- ✅ **Time Intelligence:** Sophisticated date calculations built-in
+- ✅ **Customer Analytics:** Deep insights into customer behavior
 
-## Integration Points
+## 🔗 Integration Points
 
 ```mermaid
 graph LR
-    LAB1[Lab 1<br/>Gold Tables] -->|Source Data| MODEL[Semantic Model]
-    LAB2[Lab 2<br/>KQL Data] -.->|Optional<br/>Real-time| MODEL
+    subgraph SOURCES["📥 Data Sources"]
+        LAB1["🥇 Lab 1<br/>Gold Tables<br/>Analytics-Ready"]
+        LAB2["⚡ Lab 2<br/>KQL Data<br/>Real-Time (Optional)"]
+    end
     
-    MODEL --> REPORTS[Power BI Reports]
-    MODEL --> DASHBOARDS[Dashboards]
-    MODEL --> REMOTE[Remote MCP<br/>NL Queries]
-    MODEL --> APPS[Power BI Apps]
+    MODEL["📊 Semantic Model<br/>Unified Business Logic<br/>DAX Measures"]
     
-    style LAB1 fill:#00aa00,stroke:#008800,stroke-width:2px
-    style MODEL fill:#f8b900,stroke:#e09500,stroke-width:2px
-    style REMOTE fill:#00bcf2,stroke:#0078d4,stroke-width:2px
+    subgraph CONSUMERS["📤 Consumption Layers"]
+        REPORTS["📄 Power BI Reports<br/>Visual Analytics"]
+        DASHBOARDS["📊 Dashboards<br/>Executive Views"]
+        REMOTE["⚡ Remote MCP<br/>Natural Language<br/>Queries"]
+        APPS["📱 Power BI Apps<br/>Packaged Solutions"]
+    end
+    
+    LAB1 -->|Source Data| MODEL
+    LAB2 -.->|Real-time<br/>Supplement| MODEL
+    
+    MODEL --> REPORTS
+    MODEL --> DASHBOARDS
+    MODEL --> REMOTE
+    MODEL --> APPS
+    
+    style SOURCES fill:#E8F5E9,stroke:#388E3C,stroke-width:3px,color:#000
+    style CONSUMERS fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#000
+    
+    style LAB1 fill:#66BB6A,stroke:#2E7D32,stroke-width:3px,color:#fff
+    style LAB2 fill:#EF5350,stroke:#C62828,stroke-width:2px,color:#fff
+    style MODEL fill:#FBC02D,stroke:#F57F17,stroke-width:4px,color:#000
+    style REMOTE fill:#0277BD,stroke:#01579B,stroke-width:3px,color:#fff
+    style REPORTS fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style DASHBOARDS fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style APPS fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
 ```
 
 ## Technical Specifications

@@ -4,67 +4,88 @@
 
 Lab 1 implements a complete medallion architecture (bronze, silver, gold) in Microsoft Fabric Lakehouse using AI-assisted development with Fabric MCP Server.
 
-## Architecture Diagram
+## 📊 Architecture Diagram
 
 ```mermaid
 flowchart TB
-    CSV1[dealerships.csv]
-    CSV2[inventory.csv]
-    CSV3[customers.csv]
-    CSV4[sales.csv]
-    CSV5[service_orders.csv]
-    CSV6[test_drives.csv]
+    subgraph SOURCE["📁 Source Data"]
+        CSV1["📄 dealerships.csv"]
+        CSV2["📄 inventory.csv"]
+        CSV3["📄 customers.csv"]
+        CSV4["📄 sales.csv"]
+        CSV5["📄 service_orders.csv"]
+        CSV6["📄 test_drives.csv"]
+    end
     
-    RAW[Raw CSV Files]
+    subgraph BRONZE["🥉 BRONZE LAYER - Raw Data"]
+        B1["📦 bronze_dealerships"]
+        B2["📦 bronze_inventory"]
+        B3["📦 bronze_customers"]
+        B4["📦 bronze_sales"]
+        B5["📦 bronze_service_orders"]
+        B6["📦 bronze_test_drives"]
+    end
     
-    B1[bronze_dealerships]
-    B2[bronze_inventory]
-    B3[bronze_customers]
-    B4[bronze_sales]
-    B5[bronze_service_orders]
-    B6[bronze_test_drives]
+    subgraph SILVER["🥈 SILVER LAYER - Cleansed Data"]
+        S1["✨ silver_dealerships"]
+        S2["✨ silver_inventory"]
+        S3["✨ silver_customers"]
+        S4["✨ silver_sales"]
+        S5["✨ silver_service_orders"]
+        S6["✨ silver_test_drives"]
+    end
     
-    S1[silver_dealerships]
-    S2[silver_inventory]
-    S3[silver_customers]
-    S4[silver_sales]
-    S5[silver_service_orders]
-    S6[silver_test_drives]
+    subgraph GOLD["🥇 GOLD LAYER - Analytics Ready"]
+        direction TB
+        subgraph FACTS["📊 Fact Tables"]
+            G1["📈 gold_sales_fact"]
+            G2["🔧 gold_service_fact"]
+            G3["🚗 gold_test_drive_fact"]
+        end
+        subgraph DIMS["🗂️ Dimension Tables"]
+            G4["🏢 gold_dealership_dim"]
+            G5["👤 gold_customer_dim"]
+            G6["🚙 gold_vehicle_dim"]
+        end
+        G7["📊 gold_sales_summary"]
+    end
     
-    G1[gold_sales_fact]
-    G2[gold_service_fact]
-    G3[gold_test_drive_fact]
-    G4[gold_dealership_dim]
-    G5[gold_customer_dim]
-    G6[gold_vehicle_dim]
-    G7[gold_sales_summary]
-    
-    MCP[Fabric MCP Server]
-    NB1[nb_load_contoso_auto_360]
-    NB2[nb_bronze_to_silver]
-    NB3[nb_silver_to_gold]
-    USER[User Prompts]
+    subgraph AI["🤖 AI-Assisted Development"]
+        USER["👨‍💻 User Prompts"]
+        MCP["⚡ Fabric MCP Server"]
+        NB1["📓 nb_load_contoso_auto_360"]
+        NB2["📓 nb_bronze_to_silver"]
+        NB3["📓 nb_silver_to_gold"]
+    end
 
-    CSV1 & CSV2 & CSV3 & CSV4 & CSV5 & CSV6 --> RAW
-    RAW --> B1 & B2 & B3 & B4 & B5 & B6
-    B1 & B2 & B3 & B4 & B5 & B6 --> S1 & S2 & S3 & S4 & S5 & S6
-    S1 & S2 & S3 & S4 & S5 & S6 --> G1 & G2 & G3 & G4 & G5 & G6 & G7
+    SOURCE --> BRONZE
+    BRONZE --> SILVER
+    SILVER --> GOLD
 
     USER --> MCP
     MCP --> NB1 & NB2 & NB3
-    NB1 --> B1 & B2 & B3 & B4 & B5 & B6
-    NB2 --> S1 & S2 & S3 & S4 & S5 & S6
-    NB3 --> G1 & G2 & G3 & G4 & G5 & G6 & G7
+    NB1 -.->|generates| BRONZE
+    NB2 -.->|transforms| SILVER
+    NB3 -.->|creates| GOLD
 
-    style MCP fill:#00bcf2
-    style USER fill:#ffb900
-    style G1 fill:#00aa00
-    style G2 fill:#00aa00
-    style G3 fill:#00aa00
-    style G4 fill:#00aa00
-    style G5 fill:#00aa00
-    style G6 fill:#00aa00
-    style G7 fill:#00aa00
+    style SOURCE fill:#E8EAF6,stroke:#3F51B5,stroke-width:3px,color:#000
+    style BRONZE fill:#FFF3E0,stroke:#FF6F00,stroke-width:3px,color:#000
+    style SILVER fill:#E3F2FD,stroke:#1976D2,stroke-width:3px,color:#000
+    style GOLD fill:#E8F5E9,stroke:#388E3C,stroke-width:3px,color:#000
+    style AI fill:#FCE4EC,stroke:#C2185B,stroke-width:3px,color:#000
+    style FACTS fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#000
+    style DIMS fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#000
+    
+    style MCP fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style USER fill:#C2185B,stroke:#880E4F,stroke-width:3px,color:#fff
+    
+    style G1 fill:#66BB6A,stroke:#2E7D32,stroke-width:2px,color:#000
+    style G2 fill:#66BB6A,stroke:#2E7D32,stroke-width:2px,color:#000
+    style G3 fill:#66BB6A,stroke:#2E7D32,stroke-width:2px,color:#000
+    style G4 fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style G5 fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style G6 fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style G7 fill:#FFA726,stroke:#EF6C00,stroke-width:2px,color:#000
 ```
 
 ## Data Flow Details
@@ -117,33 +138,42 @@ flowchart TB
 | **Fabric MCP Server** | AI Assistant | Generate notebook code from prompts |
 | **VS Code** | IDE | Development environment |
 
-## AI-Assisted Development Workflow
+## 🔄 AI-Assisted Development Workflow
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant MCP as Fabric MCP Server
-    participant VSCode as VS Code
-    participant Fabric as Fabric Workspace
-    participant Lakehouse as Delta Tables
+    participant User as 👨‍💻 User/Developer
+    participant MCP as ⚡ Fabric MCP Server
+    participant VSCode as 💻 VS Code
+    participant Fabric as ☁️ Fabric Workspace
+    participant Lakehouse as 🗄️ Delta Lakehouse
 
-    User->>MCP: "Generate bronze layer notebook"
-    MCP->>VSCode: PySpark code for data loading
-    User->>Fabric: Create nb_load_contoso_auto_360
-    User->>Fabric: Run notebook
-    Fabric->>Lakehouse: Create bronze tables
+    rect rgb(255, 243, 224)
+        Note over User,Lakehouse: Bronze Layer: Raw Data Ingestion
+        User->>MCP: "Generate bronze layer notebook"
+        MCP->>VSCode: PySpark code for data loading
+        User->>Fabric: Create nb_load_contoso_auto_360
+        User->>Fabric: Run notebook
+        Fabric->>Lakehouse: Create bronze tables
+    end
 
-    User->>MCP: "Generate silver layer transformations"
-    MCP->>VSCode: PySpark code with quality checks
-    User->>Fabric: Create nb_bronze_to_silver
-    User->>Fabric: Run notebook
-    Fabric->>Lakehouse: Create silver tables
+    rect rgb(227, 242, 253)
+        Note over User,Lakehouse: Silver Layer: Data Cleansing
+        User->>MCP: "Generate silver layer transformations"
+        MCP->>VSCode: PySpark code with quality checks
+        User->>Fabric: Create nb_bronze_to_silver
+        User->>Fabric: Run notebook
+        Fabric->>Lakehouse: Create silver tables
+    end
 
-    User->>MCP: "Generate gold layer analytics tables"
-    MCP->>VSCode: PySpark code with star schema
-    User->>Fabric: Create nb_silver_to_gold
-    User->>Fabric: Run notebook
-    Fabric->>Lakehouse: Create gold tables
+    rect rgb(232, 245, 233)
+        Note over User,Lakehouse: Gold Layer: Analytics Tables
+        User->>MCP: "Generate gold layer analytics tables"
+        MCP->>VSCode: PySpark code with star schema
+        User->>Fabric: Create nb_silver_to_gold
+        User->>Fabric: Run notebook
+        Fabric->>Lakehouse: Create gold tables
+    end
 ```
 
 ## Sample Prompts Used
@@ -176,12 +206,12 @@ Based on my silver layer tables, create a notebook that builds gold layer tables
 
 ## Benefits of This Architecture
 
-✅ **Separation of Concerns:** Each layer has a specific purpose
-✅ **Data Quality:** Progressive refinement from bronze to gold
-✅ **Reusability:** Silver layer can support multiple gold layer use cases
-✅ **Performance:** Gold layer optimized for query performance
-✅ **Auditability:** Full lineage from raw to analytics-ready
-✅ **AI-Assisted:** Rapid development using natural language prompts
+- ✅ **Separation of Concerns:** Each layer has a specific purpose
+- ✅ **Data Quality:** Progressive refinement from bronze to gold
+- ✅ **Reusability:** Silver layer can support multiple gold layer use cases
+- ✅ **Performance:** Gold layer optimized for query performance
+- ✅ **Auditability:** Full lineage from raw to analytics-ready
+- ✅ **AI-Assisted:** Rapid development using natural language prompts
 
 ## Technical Specifications
 

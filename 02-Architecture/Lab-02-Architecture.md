@@ -4,36 +4,59 @@
 
 Lab 2 implements real-time telemetry analytics using Microsoft Fabric's Real-Time Intelligence (Eventhouse + KQL) with AI-assisted query generation via RTI MCP Server.
 
-## Architecture Diagram
+## 📊 Architecture Diagram
 
 ```mermaid
 flowchart TB
-    JSONL[telemetry_events.jsonl]
-    INGEST[Data Ingestion]
-    TABLE[telemetry_events Table]
-    MCP[RTI MCP Server]
-    KQL[Generated KQL Queries]
-    USER[User Questions]
-    RESULTS[Query Results]
-    STREAM[Eventstream - Optional]
-    DASH[Real-Time Dashboard - Optional]
+    subgraph SOURCE["📁 Data Source"]
+        JSONL["📄 telemetry_events.jsonl<br/>Real-time Telemetry Data"]
+    end
+    
+    subgraph INGESTION["📥 Data Ingestion Layer"]
+        INGEST["⬇️ Data Ingestion Process"]
+        STREAM["🌊 Eventstream (Optional)<br/>Real-time Streaming"]
+    end
+    
+    subgraph RTI["⚡ Real-Time Intelligence"]
+        TABLE["🗄️ telemetry_events Table<br/>KQL Database"]
+    end
+    
+    subgraph AI["🤖 AI-Assisted Analytics"]
+        USER["👤 User Questions<br/>Natural Language"]
+        MCP["⚡ RTI MCP Server<br/>AI Query Generator"]
+        KQL["📝 Generated KQL Queries"]
+    end
+    
+    subgraph OUTPUT["📊 Results & Visualizations"]
+        RESULTS["✅ Query Results<br/>Insights & Analytics"]
+        DASH["📈 Real-Time Dashboard<br/>(Optional)"]
+    end
 
     JSONL --> INGEST
     INGEST --> TABLE
+    STREAM -.->|streams to| TABLE
     
     USER --> MCP
-    MCP --> KQL
-    KQL --> TABLE
-    TABLE --> RESULTS
+    MCP -->|generates| KQL
+    KQL -->|queries| TABLE
+    TABLE -->|returns| RESULTS
     RESULTS --> USER
+    TABLE -.->|feeds| DASH
 
-    STREAM -.-> TABLE
-    TABLE -.-> DASH
-
-    style MCP fill:#00bcf2
-    style USER fill:#ffb900
-    style TABLE fill:#e81123
-    style RESULTS fill:#00aa00
+    style SOURCE fill:#E8EAF6,stroke:#3F51B5,stroke-width:3px,color:#000
+    style INGESTION fill:#FFF3E0,stroke:#FF6F00,stroke-width:3px,color:#000
+    style RTI fill:#FFEBEE,stroke:#C62828,stroke-width:4px,color:#000
+    style AI fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#000
+    style OUTPUT fill:#E8F5E9,stroke:#388E3C,stroke-width:3px,color:#000
+    
+    style MCP fill:#0277BD,stroke:#01579B,stroke-width:3px,color:#fff
+    style USER fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style TABLE fill:#C62828,stroke:#B71C1C,stroke-width:3px,color:#fff
+    style RESULTS fill:#388E3C,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style KQL fill:#0288D1,stroke:#01579B,stroke-width:2px,color:#fff
+    style DASH fill:#FFA726,stroke:#EF6C00,stroke-width:2px,color:#000
+    style INGEST fill:#FFA726,stroke:#EF6C00,stroke-width:2px,color:#000
+    style STREAM fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
 ```
 
 ## Data Flow Details
@@ -70,29 +93,35 @@ flowchart TB
 - **Process:** Convert natural language questions to KQL queries
 - **Benefit:** No need to know KQL syntax
 
-## AI-Assisted Analytics Workflow
+## 🔄 AI-Assisted Analytics Workflow
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant MCP as RTI MCP Server
-    participant VSCode as VS Code
-    participant KQL as KQL Database
-    participant Results as Query Results
+    participant User as 👤 Business User
+    participant MCP as ⚡ RTI MCP Server
+    participant VSCode as 💻 VS Code
+    participant KQL as 🗄️ KQL Database
+    participant Results as 📊 Query Results
 
-    User->>MCP: "Which dealerships have highest wait times?"
-    MCP->>VSCode: Generate KQL query
-    Note over VSCode: telemetry_events<br/>| summarize AvgWait = avg(WaitTimeSeconds)<br/>  by DealershipName<br/>| order by AvgWait desc
-    User->>KQL: Execute generated query
-    KQL->>Results: Return aggregated data
-    Results->>User: Display insights
+    rect rgb(225, 245, 254)
+        Note over User,Results: Example 1: Wait Time Analysis
+        User->>MCP: "Which dealerships have highest wait times?"
+        MCP->>VSCode: Generate KQL query
+        Note over VSCode: telemetry_events<br/>| summarize AvgWait = avg(WaitTimeSeconds)<br/>  by DealershipName<br/>| order by AvgWait desc
+        User->>KQL: Execute generated query
+        KQL->>Results: Return aggregated data
+        Results->>User: Display insights
+    end
 
-    User->>MCP: "Show sentiment by region"
-    MCP->>VSCode: Generate KQL query
-    Note over VSCode: telemetry_events<br/>| summarize AvgSentiment = avg(SentimentScore)<br/>  by Region<br/>| order by AvgSentiment
-    User->>KQL: Execute query
-    KQL->>Results: Return regional sentiment
-    Results->>User: Display trends
+    rect rgb(232, 245, 233)
+        Note over User,Results: Example 2: Sentiment Analysis
+        User->>MCP: "Show sentiment by region"
+        MCP->>VSCode: Generate KQL query
+        Note over VSCode: telemetry_events<br/>| summarize AvgSentiment = avg(SentimentScore)<br/>  by Region<br/>| order by AvgSentiment
+        User->>KQL: Execute query
+        KQL->>Results: Return regional sentiment
+        Results->>User: Display trends
+    end
 ```
 
 ## Sample Business Questions & Generated Queries
@@ -163,23 +192,33 @@ telemetry_events
 | **VS Code** | IDE | Development environment |
 | **Eventstream** (Optional) | Fabric Streaming | Real-time data ingestion |
 
-## Real-Time Analytics Capabilities
+## 📈 Real-Time Analytics Capabilities
 
 ```mermaid
 graph LR
-    subgraph "Analytics Patterns"
-        A[Aggregations<br/>sum, avg, count]
-        B[Time Series<br/>Trends & Patterns]
-        C[Anomaly Detection<br/>Unusual Events]
-        D[Filtering<br/>Targeted Analysis]
-        E[Correlation<br/>Cross-Metrics]
+    KQL["🗄️ KQL Database<br/>Real-Time Engine"]
+    
+    subgraph PATTERNS["🔍 Analytics Patterns"]
+        A["➕ Aggregations<br/>sum, avg, count, max"]
+        B["📅 Time Series<br/>Trends & Patterns"]
+        C["⚠️ Anomaly Detection<br/>Unusual Events"]
+        D["🔎 Filtering<br/>Targeted Analysis"]
+        E["🔗 Correlation<br/>Cross-Metrics"]
     end
 
-    KQL[KQL Database] --> A & B & C & D & E
-    A & B & C & D & E --> INSIGHTS[Business Insights]
+    INSIGHTS["💡 Business Insights<br/>Actionable Intelligence"]
 
-    style KQL fill:#e81123,stroke:#c50f1f,stroke-width:2px,color:#fff
-    style INSIGHTS fill:#00aa00,stroke:#008800,stroke-width:2px
+    KQL --> A & B & C & D & E
+    A & B & C & D & E --> INSIGHTS
+
+    style KQL fill:#C62828,stroke:#B71C1C,stroke-width:4px,color:#fff
+    style INSIGHTS fill:#388E3C,stroke:#1B5E20,stroke-width:4px,color:#fff
+    style PATTERNS fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#000
+    style A fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style B fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style C fill:#FFA726,stroke:#EF6C00,stroke-width:2px,color:#000
+    style D fill:#42A5F5,stroke:#1565C0,stroke-width:2px,color:#000
+    style E fill:#66BB6A,stroke:#2E7D32,stroke-width:2px,color:#000
 ```
 
 ## Sample Use Cases
@@ -204,29 +243,39 @@ graph LR
 - Identify regional operational best practices
 - Allocate resources based on regional demand
 
-## Optional: Real-Time Streaming Architecture
+## 🌊 Optional: Real-Time Streaming Architecture
 
 ```mermaid
 graph LR
-    SOURCE[Data Source<br/>IoT Devices] --> STREAM[Eventstream]
-    STREAM --> TRANSFORM[Stream<br/>Transformations]
-    TRANSFORM --> KQL[KQL Database]
-    KQL --> DASH[Real-Time<br/>Dashboard]
-    KQL --> ALERTS[Activator<br/>Alerts]
+    SOURCE["📡 Data Source<br/>IoT Devices<br/>Sensors"]
+    STREAM["🌊 Eventstream<br/>Real-Time Ingestion"]
+    TRANSFORM["⚙️ Stream<br/>Transformations<br/>Processing"]
+    KQL["🗄️ KQL Database<br/>Analytics Engine"]
+    DASH["📊 Real-Time<br/>Dashboard<br/>Visualizations"]
+    ALERTS["🔔 Activator<br/>Alerts & Actions<br/>Automation"]
+    
+    SOURCE --> STREAM
+    STREAM --> TRANSFORM
+    TRANSFORM --> KQL
+    KQL --> DASH
+    KQL --> ALERTS
 
-    style STREAM fill:#00bcf2,stroke:#0078d4,stroke-width:2px
-    style KQL fill:#e81123,stroke:#c50f1f,stroke-width:2px,color:#fff
-    style DASH fill:#f8b900,stroke:#e09500,stroke-width:2px
+    style SOURCE fill:#E8EAF6,stroke:#3F51B5,stroke-width:3px,color:#000
+    style STREAM fill:#0277BD,stroke:#01579B,stroke-width:3px,color:#fff
+    style TRANSFORM fill:#FFA726,stroke:#EF6C00,stroke-width:3px,color:#000
+    style KQL fill:#C62828,stroke:#B71C1C,stroke-width:4px,color:#fff
+    style DASH fill:#388E3C,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style ALERTS fill:#D32F2F,stroke:#B71C1C,stroke-width:3px,color:#fff
 ```
 
 ## Key Benefits
 
-✅ **Real-Time Analytics:** Query streaming data instantly
-✅ **High Performance:** KQL optimized for time-series data
-✅ **Natural Language:** Use business questions, not query syntax
-✅ **Scalability:** Handle millions of events per second
-✅ **Integration:** Connect to Power BI, Azure, and Fabric services
-✅ **AI-Assisted:** RTI MCP generates complex queries from simple prompts
+- ✅ **Real-Time Analytics:** Query streaming data instantly
+- ✅ **High Performance:** KQL optimized for time-series data
+- ✅ **Natural Language:** Use business questions, not query syntax
+- ✅ **Scalability:** Handle millions of events per second
+- ✅ **Integration:** Connect to Power BI, Azure, and Fabric services
+- ✅ **AI-Assisted:** RTI MCP generates complex queries from simple prompts
 
 ## Technical Specifications
 
