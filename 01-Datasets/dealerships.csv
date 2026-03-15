@@ -1,0 +1,47 @@
+DealershipID,DealershipName,City,Region,Country,Latitude,Longitude,OpenYear,FranchiseTier,ServiceBays,ShowroomCapacity
+1001,Contoso Auto Seattle Central,Seattle,North America,USA,47.621101,-122.336248,2020,Standard,16,60
+1002,Contoso Auto Seattle West,Seattle,North America,USA,47.603361,-122.359965,2014,Standard,16,40
+1003,Contoso Auto Portland Central,Portland,North America,USA,45.497774,-122.694155,2014,Standard,16,40
+1004,Contoso Auto San Francisco Central,San Francisco,North America,USA,37.775567,-122.432234,2024,Flagship,10,60
+1005,Contoso Auto Los Angeles Central,Los Angeles,North America,USA,34.096169,-118.250473,2012,Standard,24,60
+1006,Contoso Auto Los Angeles West,Los Angeles,North America,USA,34.06471,-118.218726,2018,Flagship,24,120
+1007,Contoso Auto Phoenix Central,Phoenix,North America,USA,33.430392,-112.045577,2014,Standard,10,75
+1008,Contoso Auto Denver Central,Denver,North America,USA,39.773107,-104.979106,2012,Compact,10,75
+1009,Contoso Auto Dallas Central,Dallas,North America,USA,32.782966,-96.85579,2019,Standard,8,90
+1010,Contoso Auto Houston Central,Houston,North America,USA,29.69505,-95.401117,2013,Standard,24,40
+1011,Contoso Auto Chicago Central,Chicago,North America,USA,41.847827,-87.677299,2011,Standard,16,120
+1012,Contoso Auto Atlanta Central,Atlanta,North America,USA,33.703701,-84.366355,2022,Compact,8,120
+1013,Contoso Auto Miami Central,Miami,North America,USA,25.741392,-80.17345,2017,Flagship,10,75
+1014,Contoso Auto Toronto Central,Toronto,North America,Canada,43.667481,-79.34409,2019,Standard,10,90
+1015,Contoso Auto Vancouver Central,Vancouver,North America,Canada,49.237455,-123.087711,2016,Standard,12,75
+1016,Contoso Auto New York Central,New York,North America,USA,40.737844,-73.997103,2010,Standard,24,90
+1017,Contoso Auto New York West,New York,North America,USA,40.684787,-73.982474,2023,Standard,12,60
+1018,Contoso Auto Boston Central,Boston,North America,USA,42.362711,-71.06787,2013,Standard,16,40
+1019,Contoso Auto London Central,London,Europe,UK,51.533381,-0.058983,2022,Standard,8,50
+1020,Contoso Auto London West,London,Europe,UK,51.522243,-0.092854,2015,Standard,10,60
+1021,Contoso Auto Manchester Central,Manchester,Europe,UK,53.470478,-2.220076,2016,Compact,12,40
+1022,Contoso Auto Berlin Central,Berlin,Europe,Germany,52.508237,13.361095,2013,Standard,12,50
+1023,Contoso Auto Munich Central,Munich,Europe,Germany,48.095801,11.67031,2010,Flagship,12,90
+1024,Contoso Auto Paris Central,Paris,Europe,France,48.863048,2.291531,2018,Standard,8,50
+1025,Contoso Auto Lyon Central,Lyon,Europe,France,45.788536,4.804062,2012,Standard,10,40
+1026,Contoso Auto Madrid Central,Madrid,Europe,Spain,40.418607,-3.629903,2015,Flagship,12,75
+1027,Contoso Auto Barcelona Central,Barcelona,Europe,Spain,41.397541,2.227837,2019,Compact,10,75
+1028,Contoso Auto Amsterdam Central,Amsterdam,Europe,Netherlands,52.34434,4.927294,2024,Compact,12,120
+1029,Contoso Auto Milan Central,Milan,Europe,Italy,45.500742,9.178316,2010,Flagship,12,75
+1030,Contoso Auto Auckland Central,Auckland,ANZ,New Zealand,-36.860994,174.789025,2013,Flagship,12,50
+1031,Contoso Auto Auckland West,Auckland,ANZ,New Zealand,-36.880369,174.777508,2010,Standard,12,90
+1032,Contoso Auto Wellington Central,Wellington,ANZ,New Zealand,-41.251424,174.8024,2011,Compact,20,50
+1033,Contoso Auto Christchurch Central,Christchurch,ANZ,New Zealand,-43.500784,172.651993,2018,Standard,10,120
+1034,Contoso Auto Sydney Central,Sydney,ANZ,Australia,-33.866915,151.224348,2020,Flagship,10,75
+1035,Contoso Auto Sydney West,Sydney,ANZ,Australia,-33.865539,151.212473,2015,Standard,16,40
+1036,Contoso Auto Melbourne Central,Melbourne,ANZ,Australia,-37.804808,144.941669,2022,Standard,12,60
+1037,Contoso Auto Brisbane Central,Brisbane,ANZ,Australia,-27.46528,153.024629,2013,Standard,10,50
+1038,Contoso Auto Perth Central,Perth,ANZ,Australia,-31.927401,115.898552,2016,Standard,12,60
+1039,Contoso Auto Adelaide Central,Adelaide,ANZ,Australia,-34.8603,138.605109,2015,Standard,24,60
+1040,Contoso Auto Bengaluru Central,Bengaluru,India,India,12.979901,77.619415,2011,Standard,16,75
+1041,Contoso Auto Bengaluru West,Bengaluru,India,India,12.960406,77.609708,2012,Standard,20,40
+1042,Contoso Auto Chennai Central,Chennai,India,India,13.082353,80.276418,2023,Compact,12,40
+1043,Contoso Auto Hyderabad Central,Hyderabad,India,India,17.381276,78.50891,2014,Standard,24,40
+1044,Contoso Auto Mumbai Central,Mumbai,India,India,19.047514,72.859793,2010,Standard,10,60
+1045,Contoso Auto Delhi Central,Delhi,India,India,28.709295,77.11406,2017,Flagship,10,75
+1046,Contoso Auto Pune Central,Pune,India,India,18.481229,73.834177,2019,Compact,16,75
