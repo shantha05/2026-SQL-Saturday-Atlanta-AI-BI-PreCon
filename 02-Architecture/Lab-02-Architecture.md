@@ -96,6 +96,7 @@ flowchart TB
 ## 🔄 AI-Assisted Analytics Workflow
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryTextColor':'#000000', 'primaryColor':'#fff', 'primaryBorderColor':'#000', 'lineColor':'#000', 'secondaryColor':'#f4f4f4', 'tertiaryColor':'#fff', 'noteTextColor':'#000000', 'noteBkgColor':'#fff5ad', 'actorTextColor':'#000000', 'labelTextColor':'#000000'}}}%%
 sequenceDiagram
     participant User as 👤 Business User
     participant MCP as ⚡ RTI MCP Server

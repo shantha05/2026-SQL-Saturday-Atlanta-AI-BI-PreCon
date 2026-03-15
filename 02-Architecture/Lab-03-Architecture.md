@@ -138,6 +138,7 @@ graph TB
 **Purpose:** Generate DAX measures and enhance model metadata
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryTextColor':'#000000', 'primaryColor':'#fff', 'primaryBorderColor':'#000', 'lineColor':'#000', 'secondaryColor':'#f4f4f4', 'tertiaryColor':'#fff', 'noteTextColor':'#000000', 'noteBkgColor':'#fff5ad', 'actorTextColor':'#000000', 'labelTextColor':'#000000'}}}%%
 sequenceDiagram
     participant Dev as 👨‍💻 Developer
     participant MCP as ⚡ Modeling MCP
@@ -176,6 +177,7 @@ sequenceDiagram
 **Purpose:** Query semantic model using natural language
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryTextColor':'#000000', 'primaryColor':'#fff', 'primaryBorderColor':'#000', 'lineColor':'#000', 'secondaryColor':'#f4f4f4', 'tertiaryColor':'#fff', 'noteTextColor':'#000000', 'noteBkgColor':'#fff5ad', 'actorTextColor':'#000000', 'labelTextColor':'#000000'}}}%%
 sequenceDiagram
     participant User as 👤 Business User
     participant MCP as ⚡ Remote MCP
