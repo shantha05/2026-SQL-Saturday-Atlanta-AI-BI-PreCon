@@ -73,3 +73,13 @@ Experience the complete workflow: from medallion architecture in Lab 1, through 
 **Time:** 45-60 minutes  
 **Prerequisites:** Complete Lab 1 with gold layer tables created
 
+Power BI MCP Server
+
+{
+  "servers": {
+    "powerbi-remote": {
+      "type": "http",
+      "url": "https://api.fabric.microsoft.com/v1/mcp/powerbi"
+    }
+  }
+}
