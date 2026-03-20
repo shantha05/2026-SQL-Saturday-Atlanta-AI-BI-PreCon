@@ -56,7 +56,7 @@ Use the RTI MCP Server to work with live telemetry for Contoso Auto 360.
 
 ### Part B — Load the telemetry file
 
-1. Use one of these approaches:
+1. Use one of these approaches to load `01-Datasets/telemetry_events.jsonl`:
    - **Option A:** Upload and ingest the JSONL file directly into the KQL table using the "Get Data" feature
    - **Option B:** Create an Eventstream to stream data for a more live demo experience
 2. Confirm data loaded successfully by running this KQL query:

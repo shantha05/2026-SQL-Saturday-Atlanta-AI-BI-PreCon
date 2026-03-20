@@ -22,7 +22,7 @@ Use Fabric MCP in an MCP-capable client to explore and scaffold a complete medal
 
 ### Part B — Upload batch files
 
-1. Upload these files to the Lakehouse `Files/raw` area:
+1. Upload these files from the `01-Datasets/` folder to the Lakehouse `Files/raw` area:
    - `dealerships.csv`
    - `inventory.csv`
    - `customers.csv`
@@ -64,16 +64,23 @@ Use Fabric MCP in an MCP-capable client to explore and scaffold a complete medal
 
     ```python
     df = spark.read.option("header", True).csv("Files/raw/dealerships.csv")
-    df.write.mode("overwrite").format("delta").saveAsTable("dealerships")
+    df.write.mode("overwrite").format("delta").saveAsTable("bronze_dealerships")
     ```
 
-4. Repeat the pattern for all six batch files.
+    **Note on table naming:** Use the `bronze_` prefix for all bronze layer tables to make the medallion architecture layer explicit and follow best practices.
+
+4. Repeat the pattern for all six batch files, creating these bronze tables:
+   - bronze_dealerships
+   - bronze_inventory
+   - bronze_customers
+   - bronze_sales
+   - bronze_service_orders
+   - bronze_test_drives
 5. Run the notebook to load all data.
 6. Validate the load by checking:
     - Row counts match source files
-    - All six delta tables appear in the Lakehouse
+    - All six delta tables appear in the Lakehouse with bronze_ prefix
     - Data types are correctly inferred
-7. (Optional) Rename tables to follow bronze layer naming (e.g., `bronze_dealerships`, `bronze_sales`) or organize them in a bronze schema.
 
 ### Part F — Create Silver Layer using Fabric MCP
 
@@ -82,7 +89,7 @@ Use Fabric MCP in an MCP-capable client to explore and scaffold a complete medal
    **Prompt:**
 
    ```text
-   I have bronze tables in my Fabric Lakehouse: dealerships, inventory, customers, sales, service_orders, and test_drives. 
+   I have bronze tables in my Fabric Lakehouse: bronze_dealerships, bronze_inventory, bronze_customers, bronze_sales, bronze_service_orders, and bronze_test_drives. 
    Create a notebook that transforms these into silver layer tables with the following:
    - Remove duplicate records
    - Handle null values appropriately
@@ -201,12 +208,12 @@ At the end of Lab 1 you should have:
 - One Lakehouse: `lh_contoso_auto_360`
 - Six CSV files uploaded to `Files/raw`
 - **Bronze Layer:** Six raw delta tables with source data
-  - dealerships (or bronze_dealerships)
-  - inventory (or bronze_inventory)
-  - customers (or bronze_customers)
-  - sales (or bronze_sales)
-  - service_orders (or bronze_service_orders)
-  - test_drives (or bronze_test_drives)
+  - bronze_dealerships
+  - bronze_inventory
+  - bronze_customers
+  - bronze_sales
+  - bronze_service_orders
+  - bronze_test_drives
 - **Silver Layer:** Six cleansed and standardized tables
   - silver_dealerships
   - silver_inventory

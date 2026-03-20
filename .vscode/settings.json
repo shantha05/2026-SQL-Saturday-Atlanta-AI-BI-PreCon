@@ -1,0 +1,9 @@
+{
+  "fabric.kusto.clusters": [
+    {
+      "name": "ContosoAuto360",
+      "clusterUri": "https://trd-g6wcx7q32wftrxc35g.z4.kusto.fabric.microsoft.com",
+      "defaultDatabase": "eh_contoso_auto_360"
+    }
+  ]
+}
